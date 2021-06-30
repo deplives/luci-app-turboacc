@@ -1,0 +1,81 @@
+msgid "Turbo ACC Center"
+msgstr "网络加速"
+
+msgid "Turbo ACC Acceleration Settings"
+msgstr "网络加速设置"
+
+msgid "Software flow offloading"
+msgstr "软件流量分载"
+
+msgid "Software based offloading for routing/NAT"
+msgstr "基于软件的 Routing/NAT 分载"
+
+msgid "Hardware flow offloading"
+msgstr "硬件流量分载"
+
+msgid "Requires hardware NAT support"
+msgstr "需要硬件 NAT 支持"
+
+msgid "Shortcut-FE flow offloading"
+msgstr "Shortcut-FE 流量分载"
+
+msgid "Shortcut-FE based offloading for routing/NAT"
+msgstr "基于 Shortcut-FE 的 Routing/NAT 分载"
+
+msgid "Bridge Acceleration"
+msgstr "桥接加速"
+
+msgid "Enable Bridge Acceleration (may be functional conflict with bridge-mode VPN server)"
+msgstr "启用桥接加速 (可能会和桥接模式的VPN服务器冲突)"
+
+msgid "IPv6 Acceleration"
+msgstr "IPv6 加速"
+
+msgid "Enable IPv6 Acceleration"
+msgstr "启用 IPv6 加速"
+
+msgid "BBR CCA"
+msgstr "BBR 拥塞控制算法"
+
+msgid "Using BBR CCA can improve TCP network performance effectively"
+msgstr "使用 BBR 拥塞控制算法可以有效提升 TCP 网络性能"
+
+msgid "FullCone NAT"
+msgstr "FullCone NAT"
+
+msgid "Using FullCone NAT can improve gaming performance effectively"
+msgstr "使用 FullCone NAT 可以有效提升游戏体验"
+
+msgid "DNS Caching"
+msgstr "DNS 缓存"
+
+msgid "Enable DNS Caching and anti ISP DNS pollution"
+msgstr "启用 DNS 查询缓存"
+
+msgid "Resolve DNS Mode"
+msgstr "DNS 解析方式"
+
+msgid "DNS Program"
+msgstr "DNS 解析程序"
+
+msgid "Using PDNSD to query and cache"
+msgstr "使用 PDNSD 解析"
+
+
+msgid "Using DNSForwarder to query and cache"
+msgstr "使用 DNSForwarder 解析"
+
+msgid "Using DNSProxy to query and cache"
+msgstr "使用 DNSProxy 解析"
+
+msgid "Upsteam DNS Server"
+msgstr "上游 DNS 服务器"
+
+msgid "Muitiple DNS server can saperate with ','"
+msgstr "多个 DNS 服务器请用 ',' 分隔"
+
+msgid "Running Status"
+msgstr "运行状态"
+
+msgid "Flow Offloading"
+msgstr "流量分载"
