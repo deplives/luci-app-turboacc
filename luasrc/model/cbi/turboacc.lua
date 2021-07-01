@@ -2,7 +2,7 @@ local kernel_version = luci.sys.exec("echo -n $(uname -r)")
 
 m = Map("turboacc")
 m.title	= translate("Turbo ACC Acceleration Settings")
-m:append(Template("turboacc/status"))
+m:append(Template("turboacc/turboacc_status"))
 
 s = m:section(TypedSection, "turboacc", "")
 s.addremove = false
