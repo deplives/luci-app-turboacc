@@ -26,7 +26,7 @@ msgid "Bridge Acceleration"
 msgstr "桥接加速"
 
 msgid "Enable Bridge Acceleration (may be functional conflict with bridge-mode VPN server)"
-msgstr "启用桥接加速"
+msgstr "启用桥接加速 (可能会和桥接模式的VPN服务器冲突)"
 
 msgid "IPv6 Acceleration"
 msgstr "IPv6 加速"
