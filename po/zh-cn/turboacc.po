@@ -22,18 +22,6 @@ msgstr "Shortcut-FE 流量分载"
 msgid "Shortcut-FE based offloading for routing/NAT"
 msgstr "基于 Shortcut-FE 的 Routing/NAT 分载"
 
-msgid "Bridge Acceleration"
-msgstr "桥接加速"
-
-msgid "Enable Bridge Acceleration (may be functional conflict with bridge-mode VPN server)"
-msgstr "启用桥接加速 (可能会和桥接模式的VPN服务器冲突)"
-
-msgid "IPv6 Acceleration"
-msgstr "IPv6 加速"
-
-msgid "Enable IPv6 Acceleration"
-msgstr "启用 IPv6 加速"
-
 msgid "BBR CCA"
 msgstr "BBR 拥塞控制算法"
 
@@ -60,7 +48,6 @@ msgstr "DNS 解析程序"
 
 msgid "Using PDNSD to query and cache"
 msgstr "使用 PDNSD 解析"
-
 
 msgid "Using DNSForwarder to query and cache"
 msgstr "使用 DNSForwarder 解析"
