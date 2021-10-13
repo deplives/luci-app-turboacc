@@ -1,6 +1,4 @@
 #!/bin/sh /etc/rc.common
-# Copyright (C) 2021 Bobby <zhang.deplives@gmail.com>
-# For syncing status of firewall full-cone into turboacc.
 
 START=60
 STOP=10
