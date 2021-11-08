@@ -8,7 +8,7 @@ EXTRA_HELP="check_status Check running status of utils"
 
 restart_utils="true"
 
-inital_conf(){
+inital_conf() {
 	config_load "turboacc"
 	config_get "sw_flow" "config" "sw_flow" "0"
 	config_get "hw_flow" "config" "hw_flow" "0"
@@ -19,7 +19,10 @@ inital_conf(){
 	config_get "dns_caching_mode" "config" "dns_caching_mode" "0"
 	config_get "dns_caching_dns" "config" "dns_caching_dns"
 
-	[ ! -e "/lib/modules/$(uname -r)/xt_FLOWOFFLOAD.ko" ] && { sw_flow="0"; hw_flow="0"; }
+	[ ! -e "/lib/modules/$(uname -r)/xt_FLOWOFFLOAD.ko" ] && {
+		sw_flow="0"
+		hw_flow="0"
+	}
 	[ ! -e "/lib/modules/$(uname -r)/shortcut-fe-cm.ko" ] && sfe_flow="0"
 	[ ! -e "/lib/modules/$(uname -r)/tcp_bbr.ko" ] && bbr_cca="0"
 	[ ! -e "/lib/modules/$(uname -r)/xt_FULLCONENAT.ko" ] && fullcone_nat="0"
@@ -27,7 +30,7 @@ inital_conf(){
 
 start_pdnsd() {
 	[ -d "/var/run/dnscache" ] || mkdir -p "/var/run/dnscache"
-	cat > "/var/run/dnscache/dnscache.conf" <<EOF
+	cat >"/var/run/dnscache/dnscache.conf" <<EOF
 global {
     perm_cache=1024;
     cache_dir="/var/dnscache";
@@ -134,19 +137,19 @@ EOF
 
 	if [ ! -f "/var/dnscache/pdnsd.cache" ]; then
 		mkdir -p "/var/dnscache"
-		echo -ne "pd13\000\000\000\000" > "/var/dnscache/pdnsd.cache"
+		echo -ne "pd13\000\000\000\000" >"/var/dnscache/pdnsd.cache"
 		chown -R nobody.nogroup "/var/dnscache"
 	fi
 
 	[ -d "/var/sbin" ] || mkdir -p "/var/sbin"
 	cp -a "/usr/sbin/pdnsd" "/var/sbin/dnscache"
-	/var/sbin/dnscache -c "/var/run/dnscache/dnscache.conf" > "/var/log/dnscache.file" 2>&1 &
+	/var/sbin/dnscache -c "/var/run/dnscache/dnscache.conf" >"/var/log/dnscache.file" 2>&1 &
 	echo "PDNSD: Start DNS Caching"
 }
 
 start_dnsforwarder() {
 	mkdir -p "/var/run/dnscache"
-	cat > "/var/run/dnscache/dnscache.conf" <<EOF
+	cat >"/var/run/dnscache/dnscache.conf" <<EOF
 LogOn false
 LogFileThresholdLength 102400
 LogFileFolder /var/run/dnscache
@@ -182,18 +185,18 @@ EOF
 
 	[ -d "/var/sbin" ] || mkdir -p "/var/sbin"
 	cp -a "/usr/bin/dnsforwarder" "/var/sbin/dnscache"
-	/var/sbin/dnscache -f "/var/run/dnscache/dnscache.conf" > "/var/log/dnscache.file" 2>&1 &
+	/var/sbin/dnscache -f "/var/run/dnscache/dnscache.conf" >"/var/log/dnscache.file" 2>&1 &
 	echo "DnsForwarder: Start DNS Caching"
 
 }
 
 start_dnsproxy() {
 	[ -d "/var/run/dnscache" ] || mkdir -p "/var/run/dnscache"
-	echo -e "${dns_caching_dns//,/\\n}" > "/var/run/dnscache/dnscache.conf"
+	echo -e "${dns_caching_dns//,/\\n}" >"/var/run/dnscache/dnscache.conf"
 
 	[ -d "/var/sbin" ] || mkdir -p "/var/sbin"
 	cp -a "/usr/bin/dnsproxy" "/var/sbin/dnscache"
-	/var/sbin/dnscache -l "127.0.0.1" -p "5333" -b "tls://9.9.9.9" -f "tls://8.8.8.8" -u "/var/run/dnscache/dnscache.conf" --all-servers --cache --cache-min-ttl=3600 > "/var/log/dnscache.file" 2>&1 &
+	/var/sbin/dnscache -l "127.0.0.1" -p "5333" -b "tls://9.9.9.9" -f "tls://8.8.8.8" -u "/var/run/dnscache/dnscache.conf" --all-servers --cache --cache-min-ttl=3600 >"/var/log/dnscache.file" 2>&1 &
 	echo "DNSProxy: Start DNS Caching"
 }
 
@@ -205,7 +208,7 @@ stop_dnscache() {
 }
 
 change_dns() {
- 	uci -q delete dhcp.@dnsmasq[0].server
+	uci -q delete dhcp.@dnsmasq[0].server
 	uci add_list dhcp.@dnsmasq[0].server="127.0.0.1#5333"
 	uci set dhcp.@dnsmasq[0].noresolv="1"
 	uci commit dhcp
@@ -219,7 +222,7 @@ revert_dns() {
 	uci commit dhcp
 }
 
-start(){
+start() {
 	inital_conf
 
 	uci set firewall.@defaults[0].flow_offloading="${sw_flow}"
@@ -236,34 +239,34 @@ start(){
 				/etc/init.d/shortcut-fe start
 			}
 		}
-		[ "${sfe_flow}" -eq "0" ] && [ -e "/etc/init.d/shortcut-fe" ] && [ "$(have_ecm_init)" = "0" ] && \
-		/etc/init.d/shortcut-fe enabled && {
+		[ "${sfe_flow}" -eq "0" ] && [ -e "/etc/init.d/shortcut-fe" ] && [ "$(have_ecm_init)" = "0" ] &&
+			/etc/init.d/shortcut-fe enabled && {
 			/etc/init.d/shortcut-fe stop 2>"/dev/null"
 			/etc/init.d/shortcut-fe disable
 		}
 	}
 
-	if [ "${bbr_cca}" -eq "1" ];  then
+	if [ "${bbr_cca}" -eq "1" ]; then
 		sysctl -w net.ipv4.tcp_congestion_control="bbr"
 	else
 		sysctl -w net.ipv4.tcp_congestion_control="cubic"
-	fi	
+	fi
 
-	if [ "${dns_caching}" -eq "1" ];  then
+	if [ "${dns_caching}" -eq "1" ]; then
 		stop_dnscache
 		sleep 1
 
 		rm -f "/var/log/dnscache.file"
-		if [ "${dns_caching_mode}" = "1" ];  then
+		if [ "${dns_caching_mode}" = "1" ]; then
 			start_pdnsd
-		elif [ "${dns_caching_mode}" = "2" ];  then
+		elif [ "${dns_caching_mode}" = "2" ]; then
 			start_dnsforwarder
-		elif [ "${dns_caching_mode}" = "3" ];  then
+		elif [ "${dns_caching_mode}" = "3" ]; then
 			start_dnsproxy
 		fi
 
 		change_dns
-		/usr/share/dnscache/dnscache-while.sh > "/var/log/dnscache.file" 2>&1 &
+		/usr/share/dnscache/dnscache-while.sh >"/var/log/dnscache.file" 2>&1 &
 	else
 		stop_dnscache
 		revert_dns
@@ -275,7 +278,7 @@ start(){
 	fi
 }
 
-stop(){
+stop() {
 	inital_conf
 
 	uci set firewall.@defaults[0].flow_offloading="${sw_flow}"
@@ -299,7 +302,7 @@ stop(){
 	fi
 }
 
-restart(){
+restart() {
 	restart_utils="false"
 	stop
 	start
@@ -312,7 +315,7 @@ have_ecm_init() {
 	echo 0
 }
 
-check_status(){
+check_status() {
 	case "$1" in
 	"fastpath")
 		if [ "$(cat "/sys/module/xt_FLOWOFFLOAD/refcnt" 2>"/dev/null" || echo 0)" -ne "0" ]; then
@@ -334,11 +337,11 @@ check_status(){
 		fi
 		;;
 	"fullconenat")
-		[ "$(cat "/sys/module/xt_FULLCONENAT/refcnt" 2>"/dev/null" || echo 0)" -ne "0" ] && \
+		[ "$(cat "/sys/module/xt_FULLCONENAT/refcnt" 2>"/dev/null" || echo 0)" -ne "0" ] &&
 			exit 0 || exit 1
 		;;
 	"bbr")
-		[ "x$(cat "/proc/sys/net/ipv4/tcp_congestion_control" 2>"/dev/null")" = "xbbr" ] && \
+		[ "x$(cat "/proc/sys/net/ipv4/tcp_congestion_control" 2>"/dev/null")" = "xbbr" ] &&
 			exit 0 || exit 1
 		;;
 	"dns")
