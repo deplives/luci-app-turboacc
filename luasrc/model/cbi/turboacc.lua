@@ -15,7 +15,7 @@ if nixio.fs.access("/lib/modules/" .. kernel_version .. "/xt_FLOWOFFLOAD.ko") th
     sw_flow:depends("sfe_flow", 0)
 end
 
-if luci.sys.call("cat /proc/cpuinfo | grep -q MT76") == 0 then
+if luci.sys.call("cat /etc/openwrt_release | grep -q mt762") == 0 then
     hw_flow = s:option(Flag, "hw_flow", translate("Hardware flow offloading"))
     hw_flow.default = 0
     hw_flow.description = translate("Requires hardware NAT support")
